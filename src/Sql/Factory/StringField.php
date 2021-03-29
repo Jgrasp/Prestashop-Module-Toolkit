@@ -30,7 +30,6 @@ class StringField extends Field
         return $this->size;
     }
 
-
     public function setSize(int $size): int
     {
         $this->size = $size;
@@ -38,5 +37,9 @@ class StringField extends Field
         return $this;
     }
 
+    public function getTypeSql(): string
+    {
+        return $this->getType().'('.$this->getSize().')';
+    }
 
 }

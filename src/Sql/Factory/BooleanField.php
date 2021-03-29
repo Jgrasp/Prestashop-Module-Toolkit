@@ -15,4 +15,9 @@ class BooleanField extends NumericField
     {
         return 1;
     }
+
+    public function getTypeSql(): string
+    {
+        return $this->getType().'('.$this->getSize().')';
+    }
 }

@@ -76,8 +76,7 @@ class ModelBuilder
     {
         $queries = [];
 
-        $query = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.$this->getTable().'` (
-                      `'.$this->getPrimaryKey().'` INT(10) UNSIGNED NOT NULL';
+        $query = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.$this->getTable().'` (';
 
         $query .= (new IntegerField($this->getPrimaryKey(), true))
             ->setSize(10)
