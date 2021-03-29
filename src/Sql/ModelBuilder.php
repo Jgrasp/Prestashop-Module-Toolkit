@@ -2,7 +2,6 @@
 
 namespace Jgrasp\Toolkit\Sql;
 
-use Jgrasp\Toolkit\Sql\Factory\Field;
 use Jgrasp\Toolkit\Sql\Factory\FieldFactory;
 use Jgrasp\Toolkit\Sql\Factory\IntegerField;
 use ObjectModel;
@@ -11,25 +10,29 @@ class ModelBuilder
 {
     private $model;
 
-    public function __construct(ObjectModel $model)
+    public function __construct(string $classname)
     {
-        $this->model = $model;
+        $this->model = new \ReflectionClass($classname);
+
+        if (!$this->model->isSubclassOf(ObjectModel::class)) {
+            throw new \Exception($classname.' should be an instance of ObjectModel');
+        }
 
         $definition = $this->getDefinition();
 
         if (!array_key_exists('table', $definition) || !is_string($definition['table'])) {
-            throw new \Exception("Field 'table' is not valid in ObjectModel ".get_class($model));
+            throw new \Exception("Field 'table' is not valid in ObjectModel ".$classname);
         }
 
 
         if (!array_key_exists('fields', $definition) || !is_array($definition['fields'])) {
-            throw new \Exception("Field 'fields' is not valid in ObjectModel ".get_class($model));
+            throw new \Exception("Field 'fields' is not valid in ObjectModel ".$classname);
         }
     }
 
     public function getDefinition(): array
     {
-        return $this->model::$definition;
+        return $this->model->getStaticPropertyValue('definition');
     }
 
     public function getTable(): string

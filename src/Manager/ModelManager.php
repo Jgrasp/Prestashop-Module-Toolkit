@@ -18,7 +18,7 @@ class ModelManager
         $this->deleteOnUninstall = false;
     }
 
-    public function addEntity(ObjectModel $model): self
+    public function addEntity(string $model): self
     {
         if (!in_array($model, $this->models, true)) {
             $this->models[] = $model;
@@ -30,7 +30,7 @@ class ModelManager
     public function install(): bool
     {
         foreach ($this->models as $model) {
-            $query = ModelBuilder::getInstallSql($model);
+            $query = (new ModelBuilder($model))->getInstallSql();
 
             if (!Db::getInstance()->execute($query)) {
                 return false;
@@ -60,7 +60,6 @@ class ModelManager
     {
         return $this->deleteOnUninstall;
     }
-
 
     public function setDeleteOnUninstall(bool $deleteOnUninstall): ModelManager
     {
