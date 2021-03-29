@@ -84,7 +84,8 @@ class ModelBuilder
             ->setUnsigned(true)
             ->getSql();
 
-        foreach ($this->getFields() as $row) {
+        foreach ($this->getFields() as $name => $row) {
+            $row['name'] = $name;
             $query .= (FieldFactory::getByType($row))->getSql();
         }
 
