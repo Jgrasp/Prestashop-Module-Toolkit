@@ -1,0 +1,29 @@
+{
+  "name": "jgrasp/prestashop-module-toolbox",
+  "description": "Developers can create modules more easily",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jgrasp",
+      "email": "briaisq@hotmail.fr"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Jgrasp\\Toolkit\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jgrasp\\Toolkit\\Tests\\": "tests"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  }
+}

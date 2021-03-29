@@ -1,1 +1,1 @@
-# toolbox
+# Prestashop module toolkit
