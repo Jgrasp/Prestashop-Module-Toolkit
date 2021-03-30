@@ -44,6 +44,11 @@ class ModelBuilder
         return $this->getDefinition()['table'];
     }
 
+    public function getPrestashopTable(): string
+    {
+        return _DB_PREFIX_.$this->getTable();
+    }
+
     public function getPrimaryKey(): string
     {
         if (!array_key_exists('primary', $this->getDefinition())) {
@@ -76,14 +81,22 @@ class ModelBuilder
     {
         $queries = [];
 
-        $query = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.$this->getTable().'` (';
+        //Main table
+
+        $query = 'CREATE TABLE IF NOT EXISTS `'.$this->getPrestashopTable().'` (';
 
         $query .= (new IntegerField($this->getPrimaryKey(), true))
             ->setSize(10)
             ->setUnsigned(true)
             ->getSql();
 
-        foreach ($this->getFields() as $name => $row) {
+        if ($this->isMultiLang()) {
+            $fields = array_filter($this->getFields(), function ($field) {
+                return !isset($field['lang']) || $field['lang'] !== true;
+            });
+        }
+
+        foreach ($fields as $name => $row) {
             $row['name'] = $name;
             $query .= (FieldFactory::getByType($row))->getSql();
         }
@@ -92,6 +105,69 @@ class ModelBuilder
                   ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 
         $queries[] = $query;
+
+        //Lang table
+
+        if ($this->isMultiLang()) {
+            $query = 'CREATE TABLE IF NOT EXISTS `'.$this->getPrestashopTable().'_lang` (';
+
+            $query .= (new IntegerField($this->getPrimaryKey(), true))
+                ->setSize(10)
+                ->setUnsigned(true)
+                ->getSql();
+
+            $query .= (new IntegerField('id_lang', true))
+                ->setSize(10)
+                ->setUnsigned(true)
+                ->getSql();
+
+            $query .= (new IntegerField('id_shop', true))
+                ->setSize(10)
+                ->setUnsigned(true)
+                ->getSql();
+
+            $fields = array_filter($this->getFields(), function ($field) {
+                return isset($field['lang']) && $field['lang'] == true;
+            });
+
+            foreach ($fields as $name => $row) {
+                $row['name'] = $name;
+                $query .= (FieldFactory::getByType($row))->getSql();
+            }
+
+            $query .= 'PRIMARY KEY ( `'.$this->getPrimaryKey().'`,`id_lang`, `id_shop`))
+                  ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+
+            $queries[] = $query;
+        }
+
+        if ($this->isMultiShop()) {
+            $query = 'CREATE TABLE IF NOT EXISTS `'.$this->getPrestashopTable().'_shop` (';
+
+            $query .= (new IntegerField($this->getPrimaryKey(), true))
+                ->setSize(10)
+                ->setUnsigned(true)
+                ->getSql();
+
+            $query .= (new IntegerField('id_shop', true))
+                ->setSize(10)
+                ->setUnsigned(true)
+                ->getSql();
+
+            $fields = array_filter($this->getFields(), function ($field) {
+                return isset($field['shop']) && $field['shop'] == true;
+            });
+
+            foreach ($fields as $name => $row) {
+                $row['name'] = $name;
+                $query .= (FieldFactory::getByType($row))->getSql();
+            }
+
+            $query .= 'PRIMARY KEY ( `'.$this->getPrimaryKey().'`, `id_shop`))
+                  ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+
+            $queries[] = $query;
+        }
 
         return implode('', $queries);
     }
