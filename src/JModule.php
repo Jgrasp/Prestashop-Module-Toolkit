@@ -5,6 +5,7 @@ namespace Jgrasp\Toolkit;
 use Context;
 use Jgrasp\Toolkit\Manager\ModelManager;
 use Module;
+use Shop;
 
 class JModule extends Module
 {
