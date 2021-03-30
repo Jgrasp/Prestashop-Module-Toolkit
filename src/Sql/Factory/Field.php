@@ -32,7 +32,7 @@ class Field
             throw new \Exception('Type value is missing');
         }
 
-        $field = new self($data['name'], (string)$data['type']);
+        $field = new static($data['name'], (string)$data['type']);
 
         if (array_key_exists('required', $data)) {
             $field->setRequired((bool)$data['required']);
@@ -80,7 +80,7 @@ class Field
 
     protected function getTypeSql(): string
     {
-        return "";
+        return $this->getType();
     }
 
     protected function getRequiredSql(): string

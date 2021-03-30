@@ -20,7 +20,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Jgrasp\\Toolkit\\Tests\\": "tests"
+      "Jgrasp\\Toolkit\\Tests\\": "tests/src"
     }
   },
   "require-dev": {
