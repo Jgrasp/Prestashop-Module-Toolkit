@@ -18,14 +18,19 @@ class JModule extends Module
         parent::__construct($name, $context);
     }
 
-    public function install()
+    public function install(): bool
     {
         return parent::install() && $this->entityManager->install();
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         return parent::uninstall() && $this->entityManager->uninstall();
+    }
+
+    public function isShopContext(): bool
+    {
+        return !is_null(Shop::getContextShopID());
     }
 
     protected function getEntityManager(): ModelManager

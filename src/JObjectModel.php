@@ -12,6 +12,12 @@ class JObjectModel extends \ObjectModel
             Shop::addTableAssociation(static::$definition['table'], array('type' => 'shop'));
         }
 
+        $tableLang = $this->def['table'].'_lang';
+
+        if (isset(static::$definition['multilang']) && static::$definition['multilang'] === true && Shop::isTableAssociated($tableLang)) {
+            Shop::addTableAssociation($tableLang, array('type' => 'fk_shop'));
+        }
+
         parent::__construct($id, $id_lang, $id_shop);
     }
 }
