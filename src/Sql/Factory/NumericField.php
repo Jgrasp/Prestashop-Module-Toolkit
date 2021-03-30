@@ -9,6 +9,14 @@ class NumericField extends Field
 
     private $unsigned;
 
+    public function __construct(string $name, string $type, bool $required = false)
+    {
+        parent::__construct($name, $type, $required);
+
+        $this->unsigned = false;
+        $this->size = 10;
+    }
+
     /**
      * @param array $data
      * @return NumericField
