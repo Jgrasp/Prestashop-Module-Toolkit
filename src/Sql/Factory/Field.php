@@ -80,7 +80,7 @@ class Field
 
     protected function getTypeSql(): string
     {
-        return $this->getType();
+        return "";
     }
 
     protected function getRequiredSql(): string
