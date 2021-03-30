@@ -69,12 +69,12 @@ class ModelBuilder
 
     public function isMultiShop(): bool
     {
-        return array_key_exists('multishop', $this->getDefinition()) && $this->getDefinition()['multishop'];
+        return array_key_exists('multilang_shop', $this->getDefinition()) && $this->getDefinition()['multilang_shop'];
     }
 
     public function isMultiLang(): bool
     {
-        return array_key_exists('multishop', $this->getDefinition()) && $this->getDefinition()['multishop'];
+        return array_key_exists('multilang', $this->getDefinition()) && $this->getDefinition()['multilang'];
     }
 
     public function getInstallSql(): string
