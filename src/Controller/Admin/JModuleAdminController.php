@@ -41,7 +41,7 @@ class JModuleAdminController extends ModuleAdminController
 
             if (call_user_func([$this->className, 'isMultishopStatic'])) {
                 $this->_join = 'LEFT JOIN '._DB_PREFIX_.$this->table.'_shop c 
-                        ON (b.`id_shop` = c.`id_shop` AND b.`'.$this->identifier.'` = bs.`'.$this->identifier.'`)';
+                        ON (b.`id_shop` = c.`id_shop` AND b.`'.$this->identifier.'` = c.`'.$this->identifier.'`)';
             }
 
             if (!$this->module->isShopContext()) {
