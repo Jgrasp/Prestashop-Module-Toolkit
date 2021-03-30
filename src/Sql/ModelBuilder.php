@@ -96,9 +96,9 @@ class ModelBuilder
         return implode('', $queries);
     }
 
-    public static function getUninstallSql(ObjectModel $model): string
+    public function getUninstallSql(): string
     {
-        return (new self($model));
+        return 'DROP TABLE IF NOT EXISTS '._DB_PREFIX_.$this->getTable().';';
     }
 
 }

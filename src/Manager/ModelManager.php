@@ -45,7 +45,7 @@ class ModelManager
     {
         if ($this->deleteOnUninstall) {
             foreach ($this->models as $model) {
-                $query = ModelBuilder::getUninstallSql($model);
+                $query = (new ModelBuilder($model))->getUninstallSql();
 
                 if (!Db::getInstance()->execute($query)) {
                     return false;
