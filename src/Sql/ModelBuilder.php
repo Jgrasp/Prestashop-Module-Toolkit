@@ -174,7 +174,19 @@ class ModelBuilder
 
     public function getUninstallSql(): string
     {
-        return 'DROP TABLE '._DB_PREFIX_.$this->getTable().';';
+        $queries = [];
+
+        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().';';
+
+        if ($this->isMultiLang()) {
+            $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_lang;';
+        }
+
+        if ($this->isMultiShop()) {
+            $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_shop;';
+        }
+
+        return implode('', $queries);
     }
 
 }
