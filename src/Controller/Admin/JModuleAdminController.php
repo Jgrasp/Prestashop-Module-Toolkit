@@ -10,6 +10,8 @@ use ModuleAdminController;
 use ObjectModel;
 use ReflectionClass;
 use Shop;
+use Tools;
+use Validate;
 
 class JModuleAdminController extends ModuleAdminController
 {
@@ -60,5 +62,31 @@ class JModuleAdminController extends ModuleAdminController
         $this->autoBuild = $auto;
 
         return $this;
+    }
+
+    public function ajaxProcessUpdatePositions()
+    {
+        $tableId = substr($this->identifier, 3, strlen($this->identifier));
+
+        $positions = Tools::getValue($tableId);
+        $langId = $this->context->language->id;
+
+        if (is_array($positions)) {
+            foreach ($positions as $position => $value) {
+                $values = explode('_', $value);
+                $objectId = (int)$values[2];
+
+                $object = new $this->className($objectId, $langId, Shop::getContextShopID());
+
+                if (!Validate::isLoadedObject($object)) {
+                    continue;
+                }
+
+                $object->position = $position;
+                $object->save();
+            }
+        }
+
+        die(true);
     }
 }
