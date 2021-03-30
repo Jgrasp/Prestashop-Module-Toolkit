@@ -174,7 +174,7 @@ class ModelBuilder
 
     public function getUninstallSql(): string
     {
-        return 'DROP TABLE IF NOT EXISTS '._DB_PREFIX_.$this->getTable().';';
+        return 'DROP TABLE '._DB_PREFIX_.$this->getTable().';';
     }
 
 }
