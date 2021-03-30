@@ -4,6 +4,7 @@ namespace Jgrasp\Toolkit\Sql;
 
 use Jgrasp\Toolkit\Sql\Factory\FieldFactory;
 use Jgrasp\Toolkit\Sql\Factory\IntegerField;
+use Jgrasp\Toolkit\Sql\Factory\PrimaryField;
 use ObjectModel;
 
 class ModelBuilder
@@ -85,10 +86,7 @@ class ModelBuilder
 
         $query = 'CREATE TABLE IF NOT EXISTS `'.$this->getPrestashopTable().'` (';
 
-        $query .= (new IntegerField($this->getPrimaryKey(), true))
-            ->setSize(10)
-            ->setUnsigned(true)
-            ->getSql();
+        $query .= (new PrimaryField($this->getPrimaryKey()))->getSql();
 
         if ($this->isMultiLang()) {
             $fields = array_filter($this->getFields(), function ($field) {
