@@ -14,7 +14,7 @@ class JModuleAdminController extends ModuleAdminController
 
     public function __construct()
     {
-        parent::_construct();
+        parent::__construct();
 
         if ($this->autoBuild && $this->className) {
 
