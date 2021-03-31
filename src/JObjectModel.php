@@ -28,6 +28,16 @@ class JObjectModel extends \ObjectModel
         return $object;
     }
 
+    public static function getTableSql(): string
+    {
+        return _DB_PREFIX_.static::getTable();
+    }
+
+    public static function getTable(): string
+    {
+        return static::$definition['table'];
+    }
+
     public static function getRegularFields(): array
     {
         return array_filter(static::$definition['fields'], function ($field) {
