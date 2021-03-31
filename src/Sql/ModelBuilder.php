@@ -88,8 +88,10 @@ class ModelBuilder
 
         $query .= (new PrimaryField($this->getPrimaryKey()))->getSql();
 
+        $fields = $this->getFields();
+
         if ($this->isMultiLang()) {
-            $fields = array_filter($this->getFields(), function ($field) {
+            $fields = array_filter($fields, function ($field) {
                 return !isset($field['lang']) || $field['lang'] !== true;
             });
         }
