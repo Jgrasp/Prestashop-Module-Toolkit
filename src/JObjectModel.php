@@ -33,9 +33,29 @@ class JObjectModel extends \ObjectModel
         return _DB_PREFIX_.static::getTable();
     }
 
+    public static function getTableLangSql(): string
+    {
+        return _DB_PREFIX_.static::getTableLang();
+    }
+
+    public static function getTableShopSql(): string
+    {
+        return _DB_PREFIX_.static::getTableShop();
+    }
+
     public static function getTable(): string
     {
         return static::$definition['table'];
+    }
+
+    public static function getTableLang(): string
+    {
+        return static::getTable().'_lang';
+    }
+
+    public static function getTableShop(): string
+    {
+        return static::getTable().'_shop';
     }
 
     public static function getRegularFields(): array
