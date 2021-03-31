@@ -31,7 +31,7 @@ class NumericField extends Field
         }
 
         if (array_key_exists('unsigned', $data)) {
-            $field->setUnsigned((bool)$data['size']);
+            $field->setUnsigned((bool)$data['unsigned']);
         }
 
 
