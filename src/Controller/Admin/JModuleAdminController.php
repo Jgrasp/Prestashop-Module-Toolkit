@@ -41,7 +41,23 @@ class JModuleAdminController extends ModuleAdminController
             $this->_orderBy = 'a!'.$this->identifier;
             $this->_orderWay = 'ASC';
 
-            if (call_user_func([$this->className, 'isMultishopStatic'])) {
+            $selectFields = [];
+
+            foreach (call_user_func([$this->className, 'getRegularFields']) as $fieldName => $field) {
+                $selectFields[] = 'a.'.$fieldName;
+            }
+
+            foreach (call_user_func([$this->className, 'getMultiLangFields']) as $fieldName => $field) {
+                $selectFields[] = 'b.'.$fieldName;
+            }
+
+            foreach (call_user_func([$this->className, 'getMultiShopFields']) as $fieldName => $field) {
+                $selectFields[] = 'sa.'.$fieldName;
+            }
+
+            $this->_select = implode(',', $selectFields);
+
+            if (call_user_func([$this->className, 'isMultiShopStatic'])) {
                 $this->_join = 'LEFT JOIN '._DB_PREFIX_.$this->table.'_shop sa
                         ON (b.`id_shop` = sa.`id_shop` AND b.`'.$this->identifier.'` = sa.`'.$this->identifier.'`)';
             }
