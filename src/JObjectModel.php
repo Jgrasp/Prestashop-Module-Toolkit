@@ -8,13 +8,13 @@ class JObjectModel extends \ObjectModel
 {
     public function __construct($id = null, $id_lang = null, $id_shop = null)
     {
-        if (self::isMultiShopStatic() && !Shop::isTableAssociated($this->def['table'])) {
+        if (static::isMultiShopStatic() && !Shop::isTableAssociated($this->def['table'])) {
             Shop::addTableAssociation(static::$definition['table'], array('type' => 'shop'));
         }
 
         $tableLang = $this->def['table'].'_lang';
 
-        if (self::isMultiLangStatic() && !Shop::isTableAssociated($tableLang)) {
+        if (static::isMultiLangStatic() && !Shop::isTableAssociated($tableLang)) {
             Shop::addTableAssociation($tableLang, array('type' => 'fk_shop'));
         }
 

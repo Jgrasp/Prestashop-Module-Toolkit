@@ -9,7 +9,6 @@ use Shop;
 
 class JModule extends Module
 {
-
     private $entityManager;
 
     public function __construct($name = null, Context $context = null)

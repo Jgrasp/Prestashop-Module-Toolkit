@@ -4,10 +4,12 @@ namespace Jgrasp\Toolkit\Manager;
 
 use Db;
 use Jgrasp\Toolkit\Sql\ModelBuilder;
-use ObjectModel;
 
 class ModelManager
 {
+    /**
+     * @var ModelBuilder[]
+     */
     private $models;
 
     private $deleteOnUninstall;
@@ -21,7 +23,7 @@ class ModelManager
     public function addEntity(string $model): self
     {
         if (!in_array($model, $this->models, true)) {
-            $this->models[] = $model;
+            $this->models[] = new ModelBuilder($model);
         }
 
         return $this;
@@ -30,7 +32,7 @@ class ModelManager
     public function install(): bool
     {
         foreach ($this->models as $model) {
-            $query = (new ModelBuilder($model))->getInstallSql();
+            $query = $model->getInstallSql();
 
             if (!Db::getInstance()->execute($query)) {
                 return false;
@@ -45,7 +47,7 @@ class ModelManager
     {
         if ($this->deleteOnUninstall) {
             foreach ($this->models as $model) {
-                $query = (new ModelBuilder($model))->getUninstallSql();
+                $query = $model->getUninstallSql();
 
                 if (!Db::getInstance()->execute($query)) {
                     return false;

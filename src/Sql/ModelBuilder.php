@@ -2,32 +2,49 @@
 
 namespace Jgrasp\Toolkit\Sql;
 
+use Jgrasp\Toolkit\JObjectModel;
 use Jgrasp\Toolkit\Sql\Factory\FieldFactory;
 use Jgrasp\Toolkit\Sql\Factory\IntegerField;
 use Jgrasp\Toolkit\Sql\Factory\PrimaryField;
-use ObjectModel;
+use Shop;
 
 class ModelBuilder
 {
+    private $className;
+
     private $model;
 
-    public function __construct(string $classname)
+    public function __construct(string $className)
     {
-        $this->model = new \ReflectionClass($classname);
+        $this->className = $className;
+        $this->model = new \ReflectionClass($className);
 
-        if (!$this->model->isSubclassOf(ObjectModel::class)) {
-            throw new \Exception($classname.' should be an instance of ObjectModel');
+        if (!$this->model->isSubclassOf(JObjectModel::class)) {
+            throw new \Exception($className.' should be an instance of JObjectModel');
         }
 
         $definition = $this->getDefinition();
 
         if (!array_key_exists('table', $definition) || !is_string($definition['table'])) {
-            throw new \Exception("Field 'table' is not valid in ObjectModel ".$classname);
+            throw new \Exception("Field 'table' is not valid in JObjectModel ".$className);
         }
 
 
         if (!array_key_exists('fields', $definition) || !is_array($definition['fields'])) {
-            throw new \Exception("Field 'fields' is not valid in ObjectModel ".$classname);
+            throw new \Exception("Field 'fields' is not valid in JObjectModel ".$className);
+        }
+
+        $this->associateToShop();
+    }
+
+    public function associateToShop()
+    {
+        if ($this->isMultiShop() && !Shop::isTableAssociated($this->getTable())) {
+            Shop::addTableAssociation($this->getTable(), array('type' => 'shop'));
+        }
+
+        if ($this->isMultiLang() && !Shop::isTableAssociated($this->getTableLang())) {
+            Shop::addTableAssociation($this->getTableLang(), array('type' => 'fk_shop'));
         }
     }
 
@@ -38,11 +55,17 @@ class ModelBuilder
 
     public function getTable(): string
     {
-        if (!array_key_exists('table', $this->getDefinition())) {
-            throw new \Exception("Field 'table' does not exist in ".get_class($this->model));
-        }
+        return call_user_func([$this->className, 'getTable']);
+    }
 
-        return $this->getDefinition()['table'];
+    public function getTableLang(): string
+    {
+        return call_user_func([$this->className, 'getTableLang']);
+    }
+
+    public function getTableShop(): string
+    {
+        return call_user_func([$this->className, 'getTableShop']);
     }
 
     public function getPrestashopTable(): string
