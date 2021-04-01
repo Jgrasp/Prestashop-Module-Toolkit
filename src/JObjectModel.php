@@ -28,6 +28,11 @@ class JObjectModel extends \ObjectModel
         return $object;
     }
 
+    public static function getPrimaryKey(): string
+    {
+        return static::$definition['primary'];
+    }
+
     public static function getTableSql(): string
     {
         return _DB_PREFIX_.static::getTable();
