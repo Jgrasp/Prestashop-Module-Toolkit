@@ -177,14 +177,9 @@ class ModelBuilder
         $queries = [];
 
         $queries[] = 'DROP TABLE '.$this->getPrestashopTable().';';
+        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_lang;';
+        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_shop;';
 
-        if ($this->isMultiLang()) {
-            $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_lang;';
-        }
-
-        if ($this->isMultiShop()) {
-            $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_shop;';
-        }
 
         return implode('', $queries);
     }
