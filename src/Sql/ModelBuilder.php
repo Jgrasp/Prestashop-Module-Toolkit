@@ -176,9 +176,9 @@ class ModelBuilder
     {
         $queries = [];
 
-        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().';';
-        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_lang;';
-        $queries[] = 'DROP TABLE '.$this->getPrestashopTable().'_shop;';
+        $queries[] = 'DROP TABLE IF EXISTS '.$this->getPrestashopTable().';';
+        $queries[] = 'DROP TABLE IF EXISTS '.$this->getPrestashopTable().'_lang;';
+        $queries[] = 'DROP TABLE IF EXISTS '.$this->getPrestashopTable().'_shop;';
 
 
         return implode('', $queries);
