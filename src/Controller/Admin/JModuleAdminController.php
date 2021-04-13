@@ -108,6 +108,9 @@ class JModuleAdminController extends ModuleAdminController
             } else {
                 $this->_where = ' AND b.id_shop='.Shop::getContextShopID();
             }
+
+            //To reload listing's actions
+            $this->initToolbar();
         }
     }
 }
