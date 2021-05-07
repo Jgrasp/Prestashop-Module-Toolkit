@@ -100,13 +100,15 @@ class JModuleAdminController extends ModuleAdminController
                         ON (b.`id_shop` = sa.`id_shop` AND b.`'.$this->identifier.'` = sa.`'.$this->identifier.'`)';
             }
 
-            if (!$this->module->isShopContext()) {
-                $this->_where = ' AND b.`id_shop` = '.Configuration::get('PS_SHOP_DEFAULT');
-                $this->_group = 'GROUP BY a.`'.$this->identifier.'`';
-                $this->_defaultOrderBy = $this->identifier;
-                $this->_orderBy = $this->identifier;
-            } else {
-                $this->_where = ' AND b.id_shop='.Shop::getContextShopID();
+            if ($this->multishop_context) {
+                if (!$this->module->isShopContext()) {
+                    $this->_where = ' AND b.`id_shop` = '.Configuration::get('PS_SHOP_DEFAULT');
+                    $this->_group = 'GROUP BY a.`'.$this->identifier.'`';
+                    $this->_defaultOrderBy = $this->identifier;
+                    $this->_orderBy = $this->identifier;
+                } else {
+                    $this->_where = ' AND b.id_shop='.Shop::getContextShopID();
+                }
             }
 
             //To reload listing's actions
