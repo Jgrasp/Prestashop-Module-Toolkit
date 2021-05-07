@@ -5,7 +5,6 @@ namespace Jgrasp\Toolkit\Sql\Factory;
 
 
 use ObjectModel;
-use PHPUnit\Runner\Exception;
 
 class FieldFactory
 {
@@ -34,7 +33,7 @@ class FieldFactory
             case ObjectModel::TYPE_HTML:
                 return HtmlField::buildFromArray($data);
             default:
-                throw new Exception('Type '.$data['type'].' is not supported.');
+                throw new \Exception('Type '.$data['type'].' is not supported.');
         }
     }
 }
