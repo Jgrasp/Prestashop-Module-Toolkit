@@ -31,6 +31,7 @@ class FieldFactory
                 return DateTimeField::buildFromArray($data);
 
             case ObjectModel::TYPE_HTML:
+            case ObjectModel::TYPE_NOTHING:
                 return HtmlField::buildFromArray($data);
             default:
                 throw new \Exception('Type '.$data['type'].' is not supported.');
