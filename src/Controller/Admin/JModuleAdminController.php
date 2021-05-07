@@ -70,10 +70,10 @@ class JModuleAdminController extends ModuleAdminController
             $definition = $class->getStaticPropertyValue('definition');
 
             $this->bootstrap = true;
-            $this->lang = true;
+            $this->lang = call_user_func([$this->className, 'isMultiLangStatic']);
             $this->table = $definition['table'];
             $this->default_form_language = $this->context->language->id;
-            $this->multishop_context = true;
+            $this->multishop_context = call_user_func([$this->className, 'isMultiShopStatic']);
             $this->identifier = $definition['primary'];
             $this->position_identifier = $definition['primary'];
             $this->_orderBy = 'a!'.$this->identifier;
@@ -95,7 +95,7 @@ class JModuleAdminController extends ModuleAdminController
 
             $this->_select = implode(',', $selectFields);
 
-            if (call_user_func([$this->className, 'isMultiShopStatic'])) {
+            if ($this->multishop_context) {
                 $this->_join = 'LEFT JOIN '._DB_PREFIX_.$this->table.'_shop sa
                         ON (b.`id_shop` = sa.`id_shop` AND b.`'.$this->identifier.'` = sa.`'.$this->identifier.'`)';
             }
